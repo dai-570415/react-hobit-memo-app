@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, addDoc, getDocs, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, orderBy, serverTimestamp, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
 
 type MemoTypes = {
@@ -12,6 +12,9 @@ type MemoTypes = {
 export const Memo = () => {
     const [text, setText] = useState('');
     const [memos, setMemos] = useState<MemoTypes[]>([]);
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editingText, setEditingText] = useState('');
+
     // const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
     // const [selectedMonth, setSelectedMonth] = useState((new Date().getMonth() + 1).toString().padStart(2, '0'));
 
@@ -53,6 +56,31 @@ export const Memo = () => {
         setText('');
         fetchMemos();
     };
+
+    const startEdit = (memo: MemoTypes) => {
+        setEditingId(memo.id);
+        setEditingText(memo.text);
+    };
+
+    const updateMemo = async (id: string) => {
+        if (!editingText) return;
+
+        const memoDoc = doc(db, 'memos', id);
+        await updateDoc(memoDoc, {
+            text: editingText,
+        });
+
+        setEditingId(null);
+        setEditingText('');
+        fetchMemos();
+    };
+
+    const deleteMemo = async (id: string) => {
+        const memoDoc = doc(db, 'memos', id);
+        await deleteDoc(memoDoc);
+        fetchMemos();
+    };
+
 
     useEffect(() => {
         fetchMemos();
@@ -104,7 +132,30 @@ export const Memo = () => {
                         <ul className="posts">
                             {memos.map((memo) => (
                                 <li className="post" key={memo.id}>
-                                    <div className="inner-post">{memo.text}</div>
+                                    {editingId === memo.id ? (
+                                        <div className="inner-post">
+                                            <input
+                                                className="edit-text"
+                                                value={editingText}
+                                                onChange={(e) => setEditingText(e.target.value)}
+                                            />
+                                            <div className="btn-wrapper">
+                                                <button className="edit-btn" onClick={() => setEditingId(null)}>キャンセル</button>
+                                                <button className="edit-btn" onClick={() => updateMemo(memo.id)}>保存</button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="inner-post">
+                                            <div
+                                                className="post-text"
+                                                dangerouslySetInnerHTML={{ __html: memo.text }}
+                                            />
+                                            <div className="btn-wrapper">
+                                                <button className="edit-btn" onClick={() => startEdit(memo)}>編集</button>
+                                                <button className="edit-btn" onClick={() => deleteMemo(memo.id)}>削除</button>
+                                            </div>
+                                        </div>
+                                    )}
                                 </li>
                             ))}
                         </ul>

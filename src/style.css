@@ -706,9 +706,38 @@ img {
     border-bottom: 1px solid rgba(51, 51, 51, 0.1);
 }
 .memo .post-wrap .posts .post .inner-post {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     width: calc(100% - 40px);
     max-width: 480px;
     margin: 0 auto;
+}
+.memo .post-wrap .posts .post .inner-post .post-text {
+    width: 100%;
+    margin: 0 0 5px 0;
+}
+.memo .post-wrap .posts .post .inner-post .post-text a {
+    color: #408ffe;
+    border-bottom: 1px dashed #408ffe;
+}
+.memo .post-wrap .posts .post .inner-post .edit-text {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: none;
+    margin: 0 0 5px 0;
+    padding: 0 0 5px 0;
+    border-bottom: 1px dashed #a5a5a5;
+}
+.memo .post-wrap .posts .post .inner-post .btn-wrapper {
+    display: flex;
+    gap: 0 20px;
+}
+.memo .post-wrap .posts .post .inner-post .btn-wrapper .edit-btn {
+    color: #a5a5a5;
+    border: none;
+    background: none;
 }
 .memo .form {
     display: flex;
