@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { collection, addDoc, getDocs, query, orderBy, serverTimestamp, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { useAuth } from '../../contexts/AuthContext';
+import { SignInBtn, SignOutBtn } from '../Auth/Auth';
 
 type MemoTypes = {
     id: string;
@@ -14,6 +16,9 @@ export const Memo = () => {
     const [memos, setMemos] = useState<MemoTypes[]>([]);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editingText, setEditingText] = useState('');
+
+    const user = useAuth();
+    const isAuth = !!user;
 
     // const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
     // const [selectedMonth, setSelectedMonth] = useState((new Date().getMonth() + 1).toString().padStart(2, '0'));
@@ -119,6 +124,8 @@ export const Memo = () => {
                         {months.map(m => <option key={m} value={m}>{m}月</option>)}
                     </select>
                 </div>
+
+                {isAuth ? (<SignOutBtn />) : (<SignInBtn />)}
             </div>
 
             {Object.keys(groupedMemos).length === 0 ? (
@@ -150,10 +157,12 @@ export const Memo = () => {
                                                 className="post-text"
                                                 dangerouslySetInnerHTML={{ __html: memo.text }}
                                             />
-                                            <div className="btn-wrapper">
-                                                <button className="edit-btn" onClick={() => startEdit(memo)}>編集</button>
-                                                <button className="edit-btn" onClick={() => deleteMemo(memo.id)}>削除</button>
-                                            </div>
+                                            {isAuth && (
+                                                <div className="btn-wrapper">
+                                                    <button className="edit-btn" onClick={() => startEdit(memo)}>編集</button>
+                                                    <button className="edit-btn" onClick={() => deleteMemo(memo.id)}>削除</button>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </li>
@@ -163,19 +172,21 @@ export const Memo = () => {
                 ))
             )}
 
-            <div className="form">
-                <input
-                    className="input-text"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    placeholder="やったこと、学び、気づき等入力"
-                />
-                <button
-                    className="input-btn"
-                    onClick={addMemo}>
-                    +
-                </button>
-            </div>
+            {isAuth && (
+                <div className="form">
+                    <input
+                        className="input-text"
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        placeholder="やったこと、学び、気づき等入力"
+                    />
+                    <button
+                        className="input-btn"
+                        onClick={addMemo}>
+                        +
+                    </button>
+                </div>
+            )}
         </section>
     );
 };

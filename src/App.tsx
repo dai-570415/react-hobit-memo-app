@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Index } from './pages/Index';
 import './style.min.css';
+import { AuthProvider } from './contexts/AuthContext';
 
 // head情報
 const title = '習慣メモ';
@@ -28,7 +29,9 @@ const App: React.FC = () => {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Index} />
+        <AuthProvider>
+          <Route exact path="/" component={Index} />
+        </AuthProvider>
       </Switch>
     </Router>
   );
