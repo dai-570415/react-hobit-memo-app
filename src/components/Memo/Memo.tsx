@@ -9,6 +9,7 @@ type MemoTypes = {
     text: string;
     date: string; // YYYY-MM-DD
     createdAt?: any;
+    uid?: string;
 };
 
 export const Memo = () => {
@@ -42,12 +43,13 @@ export const Memo = () => {
             text: doc.data().text,
             date: doc.data().date,
             createdAt: doc.data().createdAt,
+            uid: doc.data().uid,
         }));
         setMemos(list);
     };
 
     const addMemo = async () => {
-        if (!text) return;
+        if (!text || !user) return; // userがいなければ何もしない
 
         const today = new Date();
         const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
@@ -56,6 +58,7 @@ export const Memo = () => {
             text,
             date: todayStr,
             createdAt: serverTimestamp(),
+            uid: user.uid,
         });
 
         setText('');
@@ -156,7 +159,7 @@ export const Memo = () => {
                                                 className="post-text"
                                                 dangerouslySetInnerHTML={{ __html: memo.text }}
                                             />
-                                            {isAuth && (
+                                            {user && memo.uid === user.uid && (
                                                 <div className="btn-wrapper">
                                                     <button className="edit-btn" onClick={() => startEdit(memo)}>編集</button>
                                                     <button className="edit-btn" onClick={() => deleteMemo(memo.id)}>削除</button>
