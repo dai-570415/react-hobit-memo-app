@@ -11,7 +11,7 @@ export const SignInBtn = () => {
     };
 
     return (
-        <button onClick={handleSignIn}>
+        <button className="sign-btn" onClick={handleSignIn}>
             Googleログイン
         </button>
     );
@@ -25,7 +25,7 @@ export const SignOutBtn = () => {
         history.push(''); // or '/signin' にしてもOK
     };
     return (
-        <button onClick={handleSignOut}>
+        <button className="sign-btn" onClick={handleSignOut}>
             ログアウト
         </button>
     );

@@ -114,6 +114,7 @@ export const Memo = () => {
         <section className="memo">
             <div className="title">
                 <h1>習慣メモ</h1>
+                {isAuth ? (<SignOutBtn />) : (<SignInBtn />)}
 
                 {/* セレクトボックス */}
                 <div className="filters">
@@ -124,8 +125,6 @@ export const Memo = () => {
                         {months.map(m => <option key={m} value={m}>{m}月</option>)}
                     </select>
                 </div>
-
-                {isAuth ? (<SignOutBtn />) : (<SignInBtn />)}
             </div>
 
             {Object.keys(groupedMemos).length === 0 ? (
