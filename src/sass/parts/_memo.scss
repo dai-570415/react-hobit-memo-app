@@ -8,9 +8,20 @@
         max-width: 480px;
         margin: 0 auto 20px;
 
-        h1 {
-            font-size: 2.4rem;
-            margin: 0 0 10px 0;
+        .head {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 0 20px 0;
+
+            h1 {
+                font-size: 2.4rem;
+            }
+
+            .sign-btn {
+                color: $gray-color-thin;
+                border: none;
+                background: none;
+            }
         }
 
         .lead-items {

@@ -84,6 +84,9 @@ export const Memo = () => {
     };
 
     const deleteMemo = async (id: string) => {
+        const ok = window.confirm('本当に削除しますか？');
+        if (!ok) return;
+
         const memoDoc = doc(db, 'memos', id);
         await deleteDoc(memoDoc);
         fetchMemos();
@@ -116,8 +119,10 @@ export const Memo = () => {
     return (
         <section className="memo">
             <div className="title">
-                <h1>習慣メモ</h1>
-                {isAuth ? (<SignOutBtn />) : (<SignInBtn />)}
+                <div className="head">
+                    <h1>習慣メモ</h1>
+                    {isAuth ? (<SignOutBtn />) : (<SignInBtn />)}
+                </div>
 
                 {/* セレクトボックス */}
                 <div className="filters">
