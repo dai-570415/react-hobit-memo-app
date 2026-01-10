@@ -1,7 +1,7 @@
 @use "../utils/utils" as *;
 
 .memo {
-    margin: 30px auto 100px;
+    margin: 30px auto 114px;
 
     .title {
         width: calc(100% - 40px);
@@ -117,6 +117,17 @@
                             color: $primary-color;
                             border-bottom: 1px dashed $primary-color;
                         }
+
+                        .tag {
+                            display: inline-block;
+                            font-size: 1.2rem;
+                            line-height: 1;
+                            margin: 0 8px 0 0;
+                            padding: 2px 8px;
+                            border-radius: 9999px;
+                            color: $white-color;
+                            background: $primary-color;
+                        }
                     }
 
                     .edit-text {
@@ -147,7 +158,9 @@
     .form {
         display: flex;
         justify-content: space-between;
+        padding: 0 0 50px 0;
         border-top: 1px solid $gray-color-thin;
+        background: $white-color;
         position: fixed;
         inset: auto 0 0 0;
         z-index: 1000;
@@ -173,4 +186,25 @@
         }
     }
 
+    .tag-wrapper {
+        padding: 0 20px 20px;
+        position: fixed;
+        inset: auto 0 0 0;
+        z-index: 1001;
+
+        .hidden-form {
+            display: none;
+        }
+
+        .tag-btn {
+            font-size: 1.4rem;
+            line-height: 1;
+            margin: 0 20px 0 0;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            border: none;
+            color: $white-color;
+            background: $primary-color;
+        }
+    }
 }

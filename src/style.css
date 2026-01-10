@@ -631,7 +631,7 @@ img {
     }
 }
 .memo {
-    margin: 30px auto 100px;
+    margin: 30px auto 114px;
 }
 .memo .title {
     width: calc(100% - 40px);
@@ -730,6 +730,16 @@ img {
     color: #408ffe;
     border-bottom: 1px dashed #408ffe;
 }
+.memo .post-wrap .posts .post .inner-post .post-text .tag {
+    display: inline-block;
+    font-size: 1.2rem;
+    line-height: 1;
+    margin: 0 8px 0 0;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    color: #fff;
+    background: #408ffe;
+}
 .memo .post-wrap .posts .post .inner-post .edit-text {
     width: 100%;
     border: none;
@@ -751,7 +761,9 @@ img {
 .memo .form {
     display: flex;
     justify-content: space-between;
+    padding: 0 0 50px 0;
     border-top: 1px solid #a5a5a5;
+    background: #fff;
     position: fixed;
     inset: auto 0 0 0;
     z-index: 1000;
@@ -773,4 +785,23 @@ img {
     padding: 20px;
     background: #fff;
     border: none;
+}
+.memo .tag-wrapper {
+    padding: 0 20px 20px;
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 1001;
+}
+.memo .tag-wrapper .hidden-form {
+    display: none;
+}
+.memo .tag-wrapper .tag-btn {
+    font-size: 1.4rem;
+    line-height: 1;
+    margin: 0 20px 0 0;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    border: none;
+    color: #fff;
+    background: #408ffe;
 }

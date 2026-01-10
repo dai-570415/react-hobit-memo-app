@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { collection, addDoc, getDocs, query, orderBy, serverTimestamp, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useAuth } from '../../contexts/AuthContext';
@@ -14,6 +14,7 @@ type MemoTypes = {
 
 export const Memo = () => {
     const [text, setText] = useState('');
+    const inputRef = useRef<HTMLTextAreaElement | null>(null);
     const [memos, setMemos] = useState<MemoTypes[]>([]);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editingText, setEditingText] = useState('');
@@ -116,6 +117,37 @@ export const Memo = () => {
     const years = Array.from({ length: 10 }, (_, i) => (new Date().getFullYear() - i).toString());
     const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
 
+    const TAGS = {
+        span: { html: '<span class="tag"></span>', cursorOffset: 7 },
+        a: { html: '<a href="" target="_blank"></a>', cursorOffset: 4 },
+    };
+
+    const insertTag = (type: 'span' | 'a') => {
+        const tagDef = TAGS[type];
+        const el = inputRef.current;
+        if (!el) return;
+
+        const start = el.selectionStart ?? 0;
+        const end = el.selectionEnd ?? 0;
+
+        const newText =
+            text.slice(0, start) +
+            tagDef.html +
+            text.slice(end);
+
+        setText(newText);
+
+        // 挿入後カーソルをタグ内に戻す
+        setTimeout(() => {
+            el.focus();
+            el.setSelectionRange(
+                start + tagDef.html.length - tagDef.cursorOffset,
+                start + tagDef.html.length - tagDef.cursorOffset
+            );
+        }, 0);
+    };
+
+
     return (
         <section className="memo">
             <div className="title">
@@ -180,19 +212,31 @@ export const Memo = () => {
             )}
 
             {isAuth && (
-                <div className="form">
-                    <input
-                        className="input-text"
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        placeholder="やったこと、学び、気づき等入力"
-                    />
-                    <button
-                        className="input-btn"
-                        onClick={addMemo}>
-                        +
-                    </button>
-                </div>
+                <>
+                    <div className="form">
+                        <input
+                            className="input-text"
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            placeholder="やったこと、学び、気づき等入力"
+                        />
+                        <button
+                            className="input-btn"
+                            onClick={addMemo}>
+                            +
+                        </button>
+                    </div>
+                    <div className="tag-wrapper">
+                        <textarea
+                            className="hidden-form"
+                            ref={inputRef}
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                        />
+                        <button className="tag-btn" onClick={() => insertTag('span')}>カテゴリー</button>
+                        <button className="tag-btn" onClick={() => insertTag('a')}>リンク</button>
+                    </div>
+                </>
             )}
         </section>
     );
