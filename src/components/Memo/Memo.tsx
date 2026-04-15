@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { collection, addDoc, getDocs, query, orderBy, serverTimestamp, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+// import { collection, addDoc, getDocs, query, orderBy, serverTimestamp, updateDoc, deleteDoc, doc, where, limit } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useAuth } from '../../contexts/AuthContext';
 import { SignInBtn, SignOutBtn } from '../Auth/Auth';
@@ -48,6 +49,31 @@ export const Memo = () => {
         }));
         setMemos(list);
     };
+
+    // const fetchMemos = async () => {
+    //     const start = `${selectedYear}-${selectedMonth}-01`;
+    //     const end = `${selectedYear}-${selectedMonth}-31`;
+
+    //     const q = query(
+    //         memosRef,
+    //         where('date', '>=', start),
+    //         where('date', '<=', end),
+    //         orderBy('date', 'desc'),
+    //         limit(50) // ← 重要
+    //     );
+
+    //     const snapshot = await getDocs(q);
+
+    //     const list = snapshot.docs.map(doc => ({
+    //         id: doc.id,
+    //         text: doc.data().text,
+    //         date: doc.data().date,
+    //         createdAt: doc.data().createdAt,
+    //         uid: doc.data().uid,
+    //     }));
+
+    //     setMemos(list);
+    // };
 
     const addMemo = async () => {
         if (!text || !user) return; // userがいなければ何もしない
