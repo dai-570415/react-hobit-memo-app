@@ -771,12 +771,28 @@ img {
     box-sizing: border-box;
 }
 .memo .form .input-text {
+    text-align: justify;
+    line-height: 1.4;
     width: 80%;
-    padding: 20px;
+    height: 60px;
+    padding: 20px 0 20px 20px;
     border: none;
     outline: none;
     background: #fff;
     box-sizing: border-box;
+    transition: height 0.5s ease-in-out;
+    resize: none;
+    overflow: hidden;
+}
+.memo .form .input-text:focus {
+    height: 40vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Firefox用 */
+}
+.memo .form .input-text:focus::-webkit-scrollbar {
+    display: none;
+    /* Safari, Chrome（スマホの大部分）用 */
 }
 .memo .form .input-btn {
     font-size: 2rem;

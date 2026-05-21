@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { collection, addDoc, getDocs, query, orderBy, serverTimestamp, updateDoc, deleteDoc, doc } from 'firebase/firestore';
-// import { collection, addDoc, getDocs, query, orderBy, serverTimestamp, updateDoc, deleteDoc, doc, where, limit } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useAuth } from '../../contexts/AuthContext';
 import { SignInBtn, SignOutBtn } from '../Auth/Auth';
@@ -11,7 +10,7 @@ type MemoTypes = {
     date: string; // YYYY-MM-DD
     createdAt?: any;
     uid?: string;
-};
+}
 
 export const Memo = () => {
     const [text, setText] = useState('');
@@ -22,9 +21,6 @@ export const Memo = () => {
 
     const user = useAuth();
     const isAuth = !!user;
-
-    // const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
-    // const [selectedMonth, setSelectedMonth] = useState((new Date().getMonth() + 1).toString().padStart(2, '0'));
 
     // 現在の年月を取得
     const now = new Date();
@@ -49,31 +45,6 @@ export const Memo = () => {
         }));
         setMemos(list);
     };
-
-    // const fetchMemos = async () => {
-    //     const start = `${selectedYear}-${selectedMonth}-01`;
-    //     const end = `${selectedYear}-${selectedMonth}-31`;
-
-    //     const q = query(
-    //         memosRef,
-    //         where('date', '>=', start),
-    //         where('date', '<=', end),
-    //         orderBy('date', 'desc'),
-    //         limit(50) // ← 重要
-    //     );
-
-    //     const snapshot = await getDocs(q);
-
-    //     const list = snapshot.docs.map(doc => ({
-    //         id: doc.id,
-    //         text: doc.data().text,
-    //         date: doc.data().date,
-    //         createdAt: doc.data().createdAt,
-    //         uid: doc.data().uid,
-    //     }));
-
-    //     setMemos(list);
-    // };
 
     const addMemo = async () => {
         if (!text || !user) return; // userがいなければ何もしない
@@ -240,7 +211,7 @@ export const Memo = () => {
             {isAuth && (
                 <>
                     <div className="form">
-                        <input
+                        <textarea
                             className="input-text"
                             value={text}
                             onChange={(e) => setText(e.target.value)}
